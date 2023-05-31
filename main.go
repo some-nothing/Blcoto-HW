@@ -18,8 +18,11 @@ func main() {
 	go sync(db, client)
 
 	r := gin.Default()
+
 	r.GET("/blocks", getLatestBlock)
 	r.GET("/blocks/:id", getBlockByID)
+	r.GET("/transaction/:id", getTx)
+
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
@@ -84,5 +87,24 @@ func getBlockByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"block": result,
+	})
+}
+
+func getTx(c *gin.Context) {
+	type Result struct {
+		Hash      string
+		BlockHash string
+		Type      int
+		From      string
+		To        string
+		Value     string
+		Input     string
+	}
+
+	var result Result
+	db.Model(&models.Transaction{}).Where("hash = ?", c.Param("id")).First(&result)
+
+	c.JSON(http.StatusOK, gin.H{
+		"tx": result,
 	})
 }
