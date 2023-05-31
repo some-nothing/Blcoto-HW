@@ -6,13 +6,14 @@ import (
 	"os"
 )
 
-type Config struct {
-	EndpointURL string
-	DatabaseURL string
+type ConfigStruct struct {
+	EndpointURL   string
+	DatabaseURL   string
+	StartPosition uint64
 }
 
-func LoadConfig() Config {
-	var config Config
+func LoadConfig() ConfigStruct {
+	var config ConfigStruct
 
 	f, _ := os.Open("config.json")
 	defer f.Close()
