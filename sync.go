@@ -90,12 +90,14 @@ func addBlockAndTX(hash common.Hash) {
 			return err
 		}
 
-		db.Create(&models.Block{
+		blockModel := models.Block{
 			Hash:       block.Hash().Hex(),
 			Number:     block.Number().Uint64(),
 			Timestamp:  block.Time(),
 			ParentHash: block.ParentHash().Hex(),
-		})
+		}
+
+		db.Create(&blockModel)
 
 		for _, tx := range block.Transactions() {
 			sender, _ := ParseSender(tx)
@@ -118,6 +120,7 @@ func addBlockAndTX(hash common.Hash) {
 				To:        toAddress,
 				Value:     tx.Value().String(),
 				Input:     inputData,
+				BlockID:   blockModel.ID,
 			})
 		}
 
