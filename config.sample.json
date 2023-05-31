@@ -1,0 +1,5 @@
+{
+    "EndpointURL": "wss://bsc.getblock.io/{key}/testnet/",
+    "DatabaseURL": "{user}:{pwd}@tcp({host}:3306)/{db_name}?charset=utf8mb4",
+    "StartPosition": 30280300
+}
